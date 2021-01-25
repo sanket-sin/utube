@@ -1,9 +1,26 @@
-import React from 'react';
+import React from "react";
 
-const VideoDetail = () =>  {
-    return(
-        <h1>This is a VideoDetail component</h1>
-    )
-}
+const VideoDetails = ({ video }) => {
+  if (!video) {
+    return <div className="error">No Videos Found</div>;
+  }
+  const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`;
 
-export default VideoDetail;
+  return (
+    <>
+      <div>
+        <iframe
+          src={videoSrc}
+          title="video Player"
+          className="w-100"
+          style={{ height: "380px" }}
+        ></iframe>
+      </div>
+      <div className="border p-2">
+        <h4>{video.snippet.title}</h4>
+        <p>{video.snippet.channelTitle}</p>
+      </div>
+    </>
+  );
+};
+export default VideoDetails;

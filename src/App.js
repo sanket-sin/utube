@@ -1,61 +1,69 @@
-import React from 'react';
-import {Grid} from '@material-ui/core';
-import youtube from './api/utube';
+import React from "react";
 
-import SearchBar from './components/SearchBar';
-import VideoDetail from './components/VideoDetail';
-//import VideoList from './components/VideoList';
+import "./App.css";
+
+import SearchBar from "./components/SearchBar";
+
+import youtube from "./api/youtubeapi";
+
+import VideoList from "./components/VideoList";
+
+import VideoDetails from "./components/VideoDetail";
 
 class App extends React.Component {
+  state = {
+    videos: [],
+    selectedVideo: "",
+  };
+  
+  onSelectVideo = (video) => {
+    this.setState({ selectedVideo: video });
+  };
+
+  componentDidMount() {
+    this.onTermSubmit("");
+  }
+
+  onTermSubmit = async (term) => {
+    const res = await youtube.get("/search", {
+      params: {
+        q: term,
+      },
+    });
+    this.setState({ videos: res.data.items, selectedVideo: res.data.items[0] });
+  };
   render() {
-    return(
-      <Grid justify="center" container spacing={16}>
-        <Grid item xs={12}>
-          <Grid container spacing={16}>
-            <Grid justify="center" item xs={6}>
-              <SearchBar />
+    return (
+      <div className="container">
+        <header>
+          <div className="wrap">
+            <div className="searchBar">
+              <SearchBar onFormSubmit={this.onTermSubmit} />
+            </div>
+          </div>
+        </header>
 
-            </Grid>
-            <Grid item xs={8}>
-              <VideoDetail />
-            </Grid>
-            <Grid item xs={4}>
-              {/* VIDEO LIST */}
-            </Grid>
-            </Grid> 
+        {/* this div is for the search bar*/}
+        <div className="container">
+          <div className="row">
+          <div class="col-xs-7 col-sm-6 col-lg-8">
 
-        </Grid>
-      </Grid>
-    )
+          {/* this div for video details*/}    
+              <VideoDetails video={this.state.selectedVideo} />
+            </div>
+            <div class="col-xs-5 col-sm-6 col-lg-4">
+
+              {/* this div for video lists*/} 
+              <VideoList
+                videos={this.state.videos}
+                onSelectVideo={this.onSelectVideo}
+              />
+            </div>
+          </div>
+        </div>
+        </div>
+    );
   }
 }
 
 export default App;
-
-
-
-/*
- import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-} */
-
