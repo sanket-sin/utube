@@ -46,9 +46,10 @@ class App extends React.Component {
         {/* this div is for the search bar*/}
         <div className="container">
           <div className="row">
-          <div class="col-xs-7 col-sm-6 col-lg-8">
+          <div class="col-xs-7 col-lg-8 test">
 
-          {/* this div for video details*/}    
+          {/* this div for video details*/}  
+            
               <VideoDetails video={this.state.selectedVideo} />
             </div>
             <div class="col-xs-5 col-sm-6 col-lg-4">
